@@ -25,6 +25,8 @@ RESULTS_DIR = Path(__file__).resolve().parents[1] / "results"
 # motion target.
 STUDENT_MOTION_CASES: list[tuple[str, float, float]] = []
 
+STUDENT_MOTION_CASES.append(("Straight-Back", -3, -3))
+
 
 def add_trajectory_playback(
     axis: Axes,

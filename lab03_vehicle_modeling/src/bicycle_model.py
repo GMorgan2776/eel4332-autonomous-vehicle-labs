@@ -46,9 +46,18 @@ def wheel_speed_to_twist(
       - For fixed speed and wheelbase, increasing steering magnitude should
         increase yaw-rate magnitude.
     """
+<<<<<<< HEAD
     linear_speed = _student_todo("convert wheel angular velocity to rim speed")
     yaw_rate = _student_todo("apply the bicycle-model steering relationship")
     return linear_speed, yaw_rate
+=======
+    linear_speed = wheel_radius * wheel_speed;
+    yaw_rate = (linear_speed / wheelbase) * np.tan(steering);
+
+    return linear_speed, yaw_rate;
+
+    raise NotImplementedError("TODO: implement wheel_speed_to_twist")
+>>>>>>> d68ca8b (Save lab work before course update)
 
 
 def step_bicycle(
@@ -78,6 +87,7 @@ def step_bicycle(
     Hint: use the current yaw, not the newly updated yaw, when computing this
     explicit Euler step's world-frame position rates.
     """
+<<<<<<< HEAD
     linear_speed, yaw_rate = wheel_speed_to_twist(
         wheel_speed, wheel_radius, steering, wheelbase
     )
@@ -88,6 +98,21 @@ def step_bicycle(
     new_y = state.y + y_rate * dt
     new_yaw = _student_todo("integrate yaw_rate for one time step")
     return BicycleState(x=new_x, y=new_y, yaw=new_yaw)
+=======
+    linear_speed, yaw_rate = wheel_speed_to_twist(wheel_speed, wheel_radius, steering, wheelbase);
+
+    speed_x = linear_speed * np.cos(state.yaw);
+    speed_y = linear_speed * np.sin(state.yaw);
+    speed_yaw = (linear_speed / wheelbase) * np.tan(steering);
+
+    step_x = state.x + speed_x * dt;
+    step_y = state.y + speed_y * dt;
+    step_yaw = state.yaw + speed_yaw * dt;
+
+    return BicycleState(step_x, step_y, step_yaw);
+
+    raise NotImplementedError("TODO: implement step_bicycle")
+>>>>>>> d68ca8b (Save lab work before course update)
 
 
 def simulate(
@@ -121,6 +146,7 @@ def simulate(
     Hint: store initial_state first, then repeatedly advance from the most
     recently returned BicycleState until all fixed time steps are complete.
     """
+<<<<<<< HEAD
     num_steps = _student_todo("calculate the number of fixed Euler updates")
     trajectory = np.zeros((num_steps + 1, 3))
     trajectory[0] = [initial_state.x, initial_state.y, initial_state.yaw]
@@ -138,3 +164,16 @@ def simulate(
         trajectory[step_index + 1] = [state.x, state.y, state.yaw]
 
     return trajectory
+=======
+    trajectory = np.zeros((int(duration / dt) + 1, 3));
+    trajectory[0] = [initial_state.x, initial_state.y, initial_state.yaw];
+
+    current_state = initial_state;
+
+    for i in range(1, trajectory.shape[0]):
+        current_state = step_bicycle(current_state, wheel_speed, wheel_radius, steering, wheelbase, dt)
+        trajectory[i] = [current_state.x, current_state.y, current_state.yaw];
+
+    return trajectory;
+    raise NotImplementedError("TODO: implement simulate")
+>>>>>>> d68ca8b (Save lab work before course update)
