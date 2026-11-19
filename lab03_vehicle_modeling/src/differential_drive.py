@@ -46,9 +46,22 @@ def wheel_speeds_to_twist(
       - Their right-minus-left difference determines the yaw direction.
       - Equal wheel speeds are a useful zero-yaw check.
     """
+<<<<<<< HEAD
     linear_speed = _student_todo("average the left and right wheel-edge speeds")
     yaw_rate = _student_todo("use the right-minus-left wheel-speed difference")
     return linear_speed, yaw_rate
+=======
+    linear_speed: float;
+    yaw_rate: float;
+
+    linear_speed = (wheel_radius / 2) * (right_speed + left_speed);
+    yaw_rate = (wheel_radius / track_width) * (right_speed - left_speed);
+    
+    return linear_speed, yaw_rate; 
+    "Returns linear speed and yaw rate as separate values"
+
+    raise NotImplementedError("TODO: implement wheel_speeds_to_twist")
+>>>>>>> d68ca8b (Save lab work before course update)
 
 
 def step_differential_drive(
@@ -79,6 +92,7 @@ def step_differential_drive(
     onto the world x and y axes. Multiply each rate by dt only when updating
     its corresponding state value.
     """
+<<<<<<< HEAD
     linear_speed, yaw_rate = wheel_speeds_to_twist(
         left_speed, right_speed, wheel_radius, track_width
     )
@@ -89,6 +103,23 @@ def step_differential_drive(
     new_y = state.y + y_rate * dt
     new_yaw = _student_todo("integrate yaw_rate for one time step")
     return DifferentialDriveState(x=new_x, y=new_y, yaw=new_yaw)
+=======
+
+    linear_speed, yaw_rate = wheel_speeds_to_twist(left_speed, right_speed, wheel_radius, track_width);
+
+    speed_x = linear_speed * np.cos(state.yaw);
+    speed_y = linear_speed * np.sin(state.yaw);
+    speed_yaw = yaw_rate;
+
+    step_x = state.x + speed_x * dt;
+    step_y = state.y + speed_y * dt;
+    step_yaw = state.yaw + speed_yaw * dt;
+
+    return DifferentialDriveState(step_x, step_y, step_yaw); 
+    "Returns the step states as a variable with those values as indexable attributes"
+
+    raise NotImplementedError("TODO: implement step_differential_drive")
+>>>>>>> d68ca8b (Save lab work before course update)
 
 
 def simulate_differential_drive(
@@ -122,6 +153,7 @@ def simulate_differential_drive(
     update. For a duration divided into fixed steps, the initial sample makes
     the trajectory contain one more row than the number of updates.
     """
+<<<<<<< HEAD
     num_steps = _student_todo("calculate the number of fixed Euler updates")
     trajectory = np.zeros((num_steps + 1, 3))
     trajectory[0] = [initial_state.x, initial_state.y, initial_state.yaw]
@@ -139,3 +171,24 @@ def simulate_differential_drive(
         trajectory[step_index + 1] = [state.x, state.y, state.yaw]
 
     return trajectory
+=======
+    trajectory = np.zeros((int(duration / dt) + 1, 3));
+    "Creates an empty array with Rows = Steps + 1 (The +1 is for initial state), and Columns = 3 (x, y, yaw)"
+
+    trajectory[0] = [initial_state.x, initial_state.y, initial_state.yaw];
+    "The first row is the initial state"
+
+    current_state = initial_state;
+    "Current state value for loop iteration"
+
+    for i in range(1, trajectory.shape[0]):
+        current_state = step_differential_drive(current_state, left_speed, right_speed, wheel_radius, track_width, dt)
+        "Obtain DifferentialDriveState for the next step state"
+        trajectory[i] = [current_state.x, current_state.y, current_state.yaw];
+        "Store the next step state in the array"
+
+    return trajectory;
+    "Returns the trajectory as an array defined under np.ndarray"
+
+    raise NotImplementedError("TODO: implement simulate_differential_drive")
+>>>>>>> d68ca8b (Save lab work before course update)
